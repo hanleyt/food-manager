@@ -41,10 +41,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
     const ENTER_KEY = 13;
-    const APP_ID = '0272867e';
-    const APP_KEY = '660dda8e974773b7bdeb3c127e33faaa';
-    const URL_START = 'https://api.edamam.com/search?';
-    const URL_AUTH = `&app_id=${APP_ID}&app_key=${APP_KEY}`;
 
     class MyView1 extends Polymer.Element {
       static get is() { return 'my-view1'; }
@@ -57,7 +53,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               return [];
             },
             notify: true,
-            readOnly: true
+            readOnly: true,
+            reflectToAttribute: true
           },
           input: {
             type: String
@@ -73,21 +70,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       addIngredient(ingredient) {
         this.push('ingredients', ingredient);
-        this.updateRecipes();
+        // this.updateRecipes();
         this.input = '';
       }
 
-      async updateRecipes() {
-        let query = 'q=' + this.ingredients.join(',');
-        let url = URL_START + query + URL_AUTH;
-        let response = await fetch(url, { method: 'GET'});
-        // if(!response.ok) { throw new Error('Network response was not ok.'); }
+      // async updateRecipes() {
+      //   let query = 'q=' + this.ingredients.join(',');
+      //   let url = URL_START + query + URL_AUTH;
+      //   let response = await fetch(url, { method: 'GET'});
+      //   // if(!response.ok) { throw new Error('Network response was not ok.'); }
 
-        debugger;
-        let data = await response.json();
+      //   debugger;
+      //   let data = await response.json();
         
-        console.log(data);
-      }
+      //   console.log(data);
+      // }
 
     }
 

@@ -20,18 +20,74 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 10px;
       }
     </style>
+    
 
-    <div class="card">
-      <div class="circle">2</div>
-      <h1>View Two</h1>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.</p>
-      <p>Id nam odio natum malorum, tibique copiosae expetenda mel ea.Detracto suavitate repudiandae no eum. Id adhuc minim soluta nam.Id nam odio natum malorum, tibique copiosae expetenda mel ea.</p>
-    </div>
+    <paper-listbox>
+        <template is="dom-repeat" items="[[recipes]]">
+          <paper-item>[[item]]</paper-item>
+        </template>
+      </paper-listbox>
+
   </template>
 
   <script>
+    const APP_ID = '0272867e';
+    const APP_KEY = '660dda8e974773b7bdeb3c127e33faaa';
+    const URL_START = 'https://api.edamam.com/search?';
+    const URL_AUTH = `&app_id=${APP_ID}&app_key=${APP_KEY}`;
     class MyView2 extends Polymer.Element {
       static get is() { return 'my-view2'; }
+
+      static get properties() {
+        return {
+          ingredients: {
+            type: Array,
+            value: function() {
+              return [];
+            },
+            notify: true,
+            reflectToAttribute: true
+          },
+          recipes: {
+            type: Array,
+            value: function() {
+              return {};
+            },
+            notify: true,
+            readOnly: true,
+            computed: '_getRecipes(ingredients)'
+          },
+        }
+      }
+
+      // static get observers() {
+      //   return [
+      //     '_ingredientsChanged(ingredients)',
+      //   ];
+      // }
+
+      // async _ingredientsChanged() {
+      //   debugger;
+      //   this.recipes = await this._getRecipes();
+      // }
+
+      _getRecipes(ingredients) {
+        debugger;
+        if (ingredients.length === 0) {
+          return [];
+        }
+        let query = 'q=' + ingredients.join(',');
+        let url = URL_START + query + URL_AUTH;
+        return _fetchRecipes(url);
+      }
+
+      async _fetchRecipes(query) {
+        debugger;
+        let response = await fetch(url, { method: 'GET'});
+        if(!response.ok) { throw new Error('Network response was not ok.'); }
+        return await response.json();
+      }
+
     }
 
     window.customElements.define(MyView2.is, MyView2);
