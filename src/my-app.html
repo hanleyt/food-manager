@@ -26,6 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="lazy-import" href="my-view2.html">
 <link rel="lazy-import" href="my-view3.html">
 <link rel="lazy-import" href="my-view404.html">
+<link rel="lazy-import" href="my-ingredients-data.html">
 
 <dom-module id="my-app">
   <template>
@@ -95,14 +96,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div main-title>Food Manager</div>
           </app-toolbar>
         </app-header>
+        <my-ingredients-data ingredients="{{ingredients}"></my-ingredients-data>
 
         <iron-pages
             selected="[[page]]"
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <my-view1 name="view1" ingredients="[[appingredients]]"></my-view1>
-          <my-view2 name="view2" ingredients="{{appingredients}}"></my-view2>
+          <my-view1 name="view1" ingredients="{{ingredients}}"></my-view1>
+          <my-view2 name="view2" ingredients="{{ingredients}}"></my-view2>
           <my-view3 name="view3"></my-view3>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
@@ -125,16 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           subroute: String,
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
-          rootPath: String,
-          appingredients: {
-              type: Array,
-              value: function() {
-                return [];
-              },
-              notify: true,
-              readOnly: true,
-              observer: '_ingredientsChanged'
-            },
+          rootPath: String
         };
       }
 
@@ -142,10 +135,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return [
           '_routePageChanged(routeData.page)',
         ];
-      }
-
-      _ingredientsChanged(){
-        debugger;
       }
 
       _routePageChanged(page) {

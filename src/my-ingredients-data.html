@@ -1,0 +1,28 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="my-ingredients-data">
+
+  <script>
+
+    class MyIngredientsData extends Polymer.Element {
+
+      static get is() { return 'my-ingredients-data'; }
+
+      static get properties() { return {
+
+        ingredients: {
+          type: Array,
+          value: ingredientsList,
+          readOnly: true,
+          notify: true
+        }
+
+      }}
+
+    }
+
+    customElements.define(MyIngredientsData.is, MyIngredientsData);
+    
+  </script>
+
+</dom-module>

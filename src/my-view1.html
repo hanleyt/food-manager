@@ -52,9 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             value: function() {
               return [];
             },
-            notify: true,
-            readOnly: true,
-            reflectToAttribute: true
+            notify: true
           },
           input: {
             type: String
@@ -70,21 +68,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       addIngredient(ingredient) {
         this.push('ingredients', ingredient);
-        // this.updateRecipes();
         this.input = '';
       }
-
-      // async updateRecipes() {
-      //   let query = 'q=' + this.ingredients.join(',');
-      //   let url = URL_START + query + URL_AUTH;
-      //   let response = await fetch(url, { method: 'GET'});
-      //   // if(!response.ok) { throw new Error('Network response was not ok.'); }
-
-      //   debugger;
-      //   let data = await response.json();
-        
-      //   console.log(data);
-      // }
 
     }
 

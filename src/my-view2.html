@@ -23,8 +23,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     
 
     <paper-listbox>
-        <template is="dom-repeat" items="[[recipes]]">
-          <paper-item>[[item]]</paper-item>
+        <template is="dom-repeat" items="[[_recipeHits]]" as="hit">
+          <paper-item>[[hit.recipe.label]]</paper-item>
         </template>
       </paper-listbox>
 
@@ -46,43 +46,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               return [];
             },
             notify: true,
-            reflectToAttribute: true
+            observer: '_updateRecipeHits'
           },
-          recipes: {
+          _recipeHits: {
             type: Array,
             value: function() {
-              return {};
+              return [];
             },
-            notify: true,
-            readOnly: true,
-            computed: '_getRecipes(ingredients)'
-          },
+          }
         }
       }
 
-      // static get observers() {
-      //   return [
-      //     '_ingredientsChanged(ingredients)',
-      //   ];
-      // }
-
-      // async _ingredientsChanged() {
-      //   debugger;
-      //   this.recipes = await this._getRecipes();
-      // }
-
-      _getRecipes(ingredients) {
-        debugger;
-        if (ingredients.length === 0) {
+      _updateRecipeHits() {
+        if (this.ingredients.length === 0) {
           return [];
         }
-        let query = 'q=' + ingredients.join(',');
+        let query = 'q=' + this.ingredients.join(',');
         let url = URL_START + query + URL_AUTH;
-        return _fetchRecipes(url);
+        this._searchRecipes(url).then(response => {
+          this._recipeHits = response.hits});
       }
 
-      async _fetchRecipes(query) {
-        debugger;
+      async _searchRecipes(url) {
         let response = await fetch(url, { method: 'GET'});
         if(!response.ok) { throw new Error('Network response was not ok.'); }
         return await response.json();
